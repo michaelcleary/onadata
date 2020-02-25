@@ -31,6 +31,8 @@ from onadata.apps.viewer.models.parsed_instance import (_encode_for_mongo,
 from onadata.apps.viewer.tests.export_helpers import viewer_fixture_path
 from onadata.libs.utils.csv_builder import (CSVDataFrameBuilder,
                                             get_labels_from_columns)
+from onadata.libs.utils.common_tags import (SELECT_BIND_TYPE,
+                                            MULTIPLE_SELECT_TYPE)
 from onadata.libs.utils.export_builder import (
     decode_mongo_encoded_section_names,
     dict_to_joined_export,
@@ -238,7 +240,7 @@ class TestExportBuilder(TestBase):
     def _create_childrens_survey(self, filename="childrens_survey.xls"):
         survey = create_survey_from_xls(_logger_fixture_path(
             filename
-        ))
+        ), default_name=filename.split('.')[0])
         self.dd = DataDictionary()
         self.dd._survey = survey
         return survey
@@ -438,7 +440,8 @@ class TestExportBuilder(TestBase):
         cvs writer doesnt handle unicode we we have to encode to ascii
         """
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_unicode.xls'))
+            'childrens_survey_unicode.xls'),
+            default_name='childrens_survey_unicode')
         export_builder = ExportBuilder()
         export_builder.set_survey(survey)
         temp_zip_file = NamedTemporaryFile(suffix='.zip')
@@ -933,7 +936,8 @@ class TestExportBuilder(TestBase):
 
     def test_xls_export_works_with_unicode(self):
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_unicode.xls'))
+            'childrens_survey_unicode.xls'),
+            default_name='childrenss_survey_unicode')
         export_builder = ExportBuilder()
         export_builder.set_survey(survey)
         temp_xls_file = NamedTemporaryFile(suffix='.xlsx')
@@ -953,7 +957,9 @@ class TestExportBuilder(TestBase):
         xlsform_path = os.path.join(
             settings.PROJECT_ROOT, "apps", "main", "tests", "fixtures",
             "hxl_test", "hxl_example.xlsx")
-        survey = create_survey_from_xls(xlsform_path)
+        survey = create_survey_from_xls(
+            xlsform_path,
+            default_name=xlsform_path.split('/')[-1].split('.')[0])
         export_builder = ExportBuilder()
         export_builder.INCLUDE_HXL = True
         export_builder.set_survey(survey)
@@ -1482,7 +1488,8 @@ class TestExportBuilder(TestBase):
 
     def test_to_xls_export_generates_valid_sheet_names(self):
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_with_a_very_long_name.xls'))
+            'childrens_survey_with_a_very_long_name.xls'),
+            default_name='childrens_survey_with_a_very_long_name')
         export_builder = ExportBuilder()
         export_builder.set_survey(survey)
         xls_file = NamedTemporaryFile(suffix='.xls')
@@ -1501,7 +1508,8 @@ class TestExportBuilder(TestBase):
 
     def test_child_record_parent_table_is_updated_when_sheet_is_renamed(self):
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_with_a_very_long_name.xls'))
+            'childrens_survey_with_a_very_long_name.xls'),
+            default_name='childrens_survey_with_a_very_long_name')
         export_builder = ExportBuilder()
         export_builder.set_survey(survey)
         xls_file = NamedTemporaryFile(suffix='.xlsx')
@@ -1563,7 +1571,8 @@ class TestExportBuilder(TestBase):
         }
 
         survey = create_survey_from_xls(viewer_fixture_path(
-            'test_data_types/test_data_types.xls'))
+            'test_data_types/test_data_types.xls'),
+            default_name='test_data_types')
         export_builder = ExportBuilder()
         export_builder.set_survey(survey)
         # format submission 1 for export
@@ -1588,7 +1597,8 @@ class TestExportBuilder(TestBase):
 
     def test_xls_convert_dates_before_1900(self):
         survey = create_survey_from_xls(viewer_fixture_path(
-            'test_data_types/test_data_types.xls'))
+            'test_data_types/test_data_types.xls'),
+            default_name='test_data_types')
         export_builder = ExportBuilder()
         export_builder.set_survey(survey)
         data = [
@@ -1758,7 +1768,8 @@ class TestExportBuilder(TestBase):
 
     def test_xls_export_remove_group_name(self):
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_unicode.xls'))
+            'childrens_survey_unicode.xls'),
+            default_name='childrens_survey_unicode')
         export_builder = ExportBuilder()
         export_builder.TRUNCATE_GROUP_TITLE = True
         export_builder.set_survey(survey)
@@ -1779,7 +1790,8 @@ class TestExportBuilder(TestBase):
         cvs writer doesnt handle unicode we we have to encode to ascii
         """
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_unicode.xls'))
+            'childrens_survey_unicode.xls'),
+            default_name='childrens_survey_unicode')
         export_builder = ExportBuilder()
         export_builder.TRUNCATE_GROUP_TITLE = True
         export_builder.set_survey(survey)
@@ -1824,7 +1836,8 @@ class TestExportBuilder(TestBase):
 
     def test_xls_export_with_labels(self):
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_unicode.xls'))
+            'childrens_survey_unicode.xls'),
+            default_name='childrens_survey_unicode')
         export_builder = ExportBuilder()
         export_builder.TRUNCATE_GROUP_TITLE = True
         export_builder.INCLUDE_LABELS = True
@@ -1853,7 +1866,8 @@ class TestExportBuilder(TestBase):
 
     def test_xls_export_with_labels_only(self):
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_unicode.xls'))
+            'childrens_survey_unicode.xls'),
+            default_name='childrens_survey_unicode')
         export_builder = ExportBuilder()
         export_builder.TRUNCATE_GROUP_TITLE = True
         export_builder.INCLUDE_LABELS_ONLY = True
@@ -1877,7 +1891,8 @@ class TestExportBuilder(TestBase):
         cvs writer doesnt handle unicode we we have to encode to ascii
         """
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_unicode.xls'))
+            'childrens_survey_unicode.xls'),
+            default_name='childrens_survey_unicode')
         export_builder = ExportBuilder()
         export_builder.TRUNCATE_GROUP_TITLE = True
         export_builder.INCLUDE_LABELS = True
@@ -1943,7 +1958,8 @@ class TestExportBuilder(TestBase):
         cvs writer doesnt handle unicode we we have to encode to ascii
         """
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_unicode.xls'))
+            'childrens_survey_unicode.xls'),
+            default_name='childrens_survey_unicode')
         export_builder = ExportBuilder()
         export_builder.TRUNCATE_GROUP_TITLE = True
         export_builder.INCLUDE_LABELS_ONLY = True
@@ -2063,7 +2079,8 @@ class TestExportBuilder(TestBase):
 
     def test_xls_export_with_english_labels(self):
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_en.xls'))
+            'childrens_survey_en.xls'),
+            default_name='childrens_survey_en')
         # no default_language is not set
         self.assertEqual(
             survey.to_json_dict().get('default_language'), 'default'
@@ -2091,7 +2108,8 @@ class TestExportBuilder(TestBase):
 
     def test_xls_export_with_swahili_labels(self):
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_sw.xls'))
+            'childrens_survey_sw.xls'),
+            default_name='childrens_survey_sw')
         # default_language is set to swahili
         self.assertEqual(
             survey.to_json_dict().get('default_language'), 'swahili'
@@ -2119,7 +2137,8 @@ class TestExportBuilder(TestBase):
 
     def test_csv_export_with_swahili_labels(self):
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_sw.xls'))
+            'childrens_survey_sw.xls'),
+            default_name='childrens_survey_sw')
         # default_language is set to swahili
         self.assertEqual(
             survey.to_json_dict().get('default_language'), 'swahili'
@@ -2136,7 +2155,8 @@ class TestExportBuilder(TestBase):
 
     def test_select_multiples_choices(self):
         survey = create_survey_from_xls(_logger_fixture_path(
-            'childrens_survey_sw.xls'))
+            'childrens_survey_sw.xls'),
+            default_name='childrens_survey_sw')
         dd = DataDictionary()
         dd._survey = survey
         export_builder = ExportBuilder()
@@ -2144,7 +2164,8 @@ class TestExportBuilder(TestBase):
         export_builder.INCLUDE_LABELS = True
         export_builder.set_survey(survey)
         child = [e for e in dd.get_survey_elements_with_choices()
-                 if e.bind.get('type') == 'select'][0]
+                 if e.bind.get('type') == SELECT_BIND_TYPE
+                 and e.type == MULTIPLE_SELECT_TYPE][0]
         self.assertNotEqual(child.children, [])
         choices = export_builder._get_select_mulitples_choices(
             child, dd, ExportBuilder.GROUP_DELIMITER,
@@ -2190,7 +2211,7 @@ class TestExportBuilder(TestBase):
     def test_select_multiples_choices_with_choice_filter(self):
         survey = create_survey_from_xls(_logger_fixture_path(
             'choice_filter.xlsx'
-        ))
+        ), default_name='choice_filter')
         dd = DataDictionary()
         dd._survey = survey
         export_builder = ExportBuilder()
@@ -2198,7 +2219,8 @@ class TestExportBuilder(TestBase):
         export_builder.INCLUDE_LABELS = True
         export_builder.set_survey(survey)
         child = [e for e in dd.get_survey_elements_with_choices()
-                 if e.bind.get('type') == 'select'][0]
+                 if e.bind.get('type') == SELECT_BIND_TYPE
+                 and e.type == MULTIPLE_SELECT_TYPE][0]
         choices = export_builder._get_select_mulitples_choices(
             child, dd, ExportBuilder.GROUP_DELIMITER,
             ExportBuilder.TRUNCATE_GROUP_TITLE
@@ -2282,7 +2304,9 @@ class TestExportBuilder(TestBase):
                  for filename in filenames]
         submission_path = os.path.join(osm_fixtures_dir, 'instance_a.xml')
         self._make_submission_w_attachment(submission_path, paths)
-        survey = create_survey_from_xls(xlsform_path)
+        survey = create_survey_from_xls(
+            xlsform_path,
+            default_name=xlsform_path.split('/')[-1].split('.')[0])
         return survey
 
     def test_zip_csv_export_has_comment_and_status_field(self):
