@@ -60,6 +60,7 @@ ADD . /srv/onadata/
 ENV DJANGO_SETTINGS_MODULE onadata.settings.docker
 
 USER root
+RUN chown -R onadata:onadata /srv/onadata
 
 # for local development tmux is a nice to have
 RUN apt-get install -y tmux
