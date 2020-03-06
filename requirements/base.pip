@@ -10,6 +10,7 @@
 -e git+https://github.com/onaio/floip-py.git@3bbf5c76b34ec49c438a3099ab848870514d1e50#egg=pyfloip
 -e git+https://github.com/onaio/python-digest.git@3af1bd0ef6114e24bf23d0e8fd9d7ebf389845d1#egg=python-digest
 -e git+https://github.com/onaio/python-json2xlsclient.git@62b4645f7b4f2684421a13ce98da0331a9dd66a0#egg=python-json2xlsclient
+-e git+https://github.com/kenhorn/pyxform.git@b4bec6c558ab883aa465acfbd13033edaa329d22#egg=pyxform
 alabaster==0.7.12         # via sphinx
 amqp==2.4.2               # via kombu
 argparse==1.4.0           # via unittest2
@@ -103,7 +104,7 @@ pyrsistent==0.15.1        # via jsonschema
 python-dateutil==2.8.0    # via fleming, tableschema
 python-memcached==1.59
 pytz==2019.1              # via babel, celery, django, django-query-builder, fleming
-pyxform==0.15.1
+#pyxform==0.15.1
 raven==6.10.0
 recaptcha-client==1.0.6
 requests-mock==1.6.0
