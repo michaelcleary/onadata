@@ -57,7 +57,7 @@ WORKDIR /srv/onadata
 
 ADD . /srv/onadata/
 
-ENV DJANGO_SETTINGS_MODULE onadata.settings.docker
+ENV DJANGO_SETTINGS_MODULE onadata.settings.env_var_settings
 
 USER root
 RUN chown -R onadata:onadata /srv/onadata
