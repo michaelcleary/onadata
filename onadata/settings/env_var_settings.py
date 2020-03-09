@@ -18,7 +18,7 @@ ADMINS = (
 # your actual production settings go here...,.
 DATABASES = {
     'default': {
-        'ENGINE':   'django.db.backends.postgresql_psycopg2',
+        'ENGINE':   'django.contrib.gis.db.backends.postgis',
         'NAME':     os.environ['FORMHUB_DB_NAME'],
         'USER':     os.environ['FORMHUB_DB_USER'],
         # the password must be stored in an environment variable
@@ -41,4 +41,33 @@ TOUCHFORMS_URL = 'http://localhost:9000/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ['FORMHUB_SECRET']
+
+DATABASE_ROUTERS = []  # turn off second database
+SLAVE_DATABASES = []
+
+ALLOWED_HOSTS = ['*']
+
+INTERNAL_IPS = ['127.0.0.1']
+
+DEBUG = True
+CORS_ORIGIN_ALLOW_ALL = True
+CHECK_EXPIRED_TEMP_TOKEN = False
+
+# pylint: disable=simplifiable-if-statement
+if len(sys.argv) >= 2 and (sys.argv[1] == "test" or sys.argv[1] == "test_all"):
+    # This trick works only when we run tests from the command line.
+    TESTING_MODE = True
+else:
+    TESTING_MODE = False
+
+CELERY_BROKER_URL = 'amqp://guest:@queue:5672//'
+CELERY_TASK_ALWAYS_EAGER = False
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_CACHE_BACKEND = 'memory'
+CELERY_BROKER_CONNECTION_MAX_RETRIES = 2
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')  # noqa
 
