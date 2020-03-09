@@ -66,13 +66,13 @@ CACHE_MIDDLEWARE_SECONDS = 3600  # 1 hour
 CACHE_MIDDLEWARE_KEY_PREFIX = ''
 
 REST_SERVICES_TO_MODULES = {
-    'google_sheets': 'google_export.services',
+#    'google_sheets': 'google_export.services',
 }
 
 REST_SERVICES_TO_SERIALIZERS = {
-    'google_sheets': 'google_export.serializers.GoogleSheetsSerializer'
+#    'google_sheets': 'google_export.serializers.GoogleSheetsSerializer'
 }
 
 CUSTOM_MAIN_URLS = {
-    'google_export.urls'
+#    'google_export.urls'
 }
