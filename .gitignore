@@ -5,6 +5,7 @@ error.log
 load_script.logs
 load_script.pid
 local_settings.py
+local_run.sh
 pyxform
 search_index
 tmp/*

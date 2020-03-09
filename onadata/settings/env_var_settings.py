@@ -19,7 +19,7 @@ ADMINS = (
 DATABASES = {
     'default': {
         'ENGINE':   'django.db.backends.postgresql_psycopg2',
-        'NAME':     os.eFORMHUB_DB_NAMEnviron['FORMHUB_DB_NAME'],
+        'NAME':     os.environ['FORMHUB_DB_NAME'],
         'USER':     os.environ['FORMHUB_DB_USER'],
         # the password must be stored in an environment variable
         'PASSWORD': os.environ['FORMHUB_DB_PASSWORD'],
@@ -48,7 +48,7 @@ TIME_ZONE = os.environ.get('FORMHUB_TZ', 'Africa/Lagos')
 TOUCHFORMS_URL = 'http://localhost:9000/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = os.environ('FORMHUB_SECRET')
+SECRET_KEY = os.environ['FORMHUB_SECRET']
 
 # Caching
 CACHES = {
