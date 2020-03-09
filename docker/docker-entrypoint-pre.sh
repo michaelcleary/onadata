@@ -11,10 +11,11 @@ psql -h $FORMHUB_DB_SERVER -U postgres onadata -c "CREATE EXTENSION postgis; CRE
 virtualenv -p `which $SELECTED_PYTHON` /srv/onadata/.virtualenv/${SELECTED_PYTHON}
 . /srv/onadata/.virtualenv/${SELECTED_PYTHON}/bin/activate
 
-#cd /srv/onadata
+export DJANGO_SETTINGS_MODULE=onadata.settings.env_var_settings
+
+cd /srv/onadata
 #pip install --upgrade pip
 #yes w | pip install -r requirements/base.pip
-export DJANGO_SETTINGS_MODULE=onadata.settings.env_var_settings
 
 echo about to migrate
 python manage.py migrate --noinput

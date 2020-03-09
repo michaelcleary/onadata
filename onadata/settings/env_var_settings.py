@@ -25,14 +25,6 @@ DATABASES = {
         'PASSWORD': os.environ['FORMHUB_DB_PASSWORD'],
         # the server name may be in env
         'HOST':     os.environ.get("FORMHUB_DB_SERVER", 'dbserver.yourdomain.org')
-    },
-    'gis': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'phis',
-        'USER': 'staff',
-        # the password must be stored in an environment variable
-        'PASSWORD': os.environ['PHIS_PW'],
-        'HOST': 'gisserver.yourdomain.org'
     }
 }
 
@@ -50,29 +42,3 @@ TOUCHFORMS_URL = 'http://localhost:9000/'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ['FORMHUB_SECRET']
 
-# Caching
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
-        'LOCATION': '127.0.0.1:11211',
-    }
-}
-
-MIDDLEWARE += ('django.middleware.cache.UpdateCacheMiddleware',
-                       'django.middleware.common.CommonMiddleware',
-                       'django.middleware.cache.FetchFromCacheMiddleware',)
-
-CACHE_MIDDLEWARE_SECONDS = 3600  # 1 hour
-CACHE_MIDDLEWARE_KEY_PREFIX = ''
-
-REST_SERVICES_TO_MODULES = {
-#    'google_sheets': 'google_export.services',
-}
-
-REST_SERVICES_TO_SERIALIZERS = {
-#    'google_sheets': 'google_export.serializers.GoogleSheetsSerializer'
-}
-
-CUSTOM_MAIN_URLS = {
-#    'google_export.urls'
-}
