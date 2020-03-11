@@ -235,13 +235,18 @@ def set_object_permissions(sender, instance=None, created=False, **kwargs):
         if instance.created_by and instance.user != instance.created_by:
             OwnerRole.add(instance.created_by, xform)
 
-        from onadata.libs.utils.project_utils import set_project_perms_to_xform_async  # noqa
-        try:
-            set_project_perms_to_xform_async.delay(xform.pk,
-                                                   instance.project.pk)
-        except OperationalError:
-            from onadata.libs.utils.project_utils import set_project_perms_to_xform  # noqa
-            set_project_perms_to_xform(xform, instance.project)
+        # from onadata.libs.utils.project_utils import set_project_perms_to_xform_async  # noqa
+        # try:
+        #     print("data_dictionary.sop jjd")
+        #     set_project_perms_to_xform_async.delay(xform.pk,
+        #                                            instance.project.pk)
+        #     print("data_dictionary.sop jje")
+
+        # except OperationalError:
+        # use synchronous, TODO make configurable -- this avoids rabbitmq/ampq for now
+        print("data_dictionary.set_object_permissions - using synchronous version ")
+        from onadata.libs.utils.project_utils import set_project_perms_to_xform  # noqa
+        set_project_perms_to_xform(xform, instance.project)
 
     if hasattr(instance, 'has_external_choices') \
             and instance.has_external_choices:
