@@ -7,6 +7,7 @@ load_script.pid
 local_settings.py
 local_run.sh
 local_run*.sh
+local_build*.sh
 pyxform
 search_index
 tmp/*
