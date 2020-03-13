@@ -18,4 +18,10 @@ python manage.py migrate --noinput
 echo about to collect
 python manage.py collectstatic --noinput
 echo about to runserver
+
+masked=$(echo $AWS_SECRET_ACCESS_KEY | sed 's/./*/g' )
+echo "==============================================================="
+echo "== AWS_ACCESS_KEY_ID:     $AWS_ACCESS_KEY_ID"
+echo "== AWS_SECRET_ACCESS_KEY: $masked"
+echo "==============================================================="
 python manage.py runserver 0.0.0.0:8000
