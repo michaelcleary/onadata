@@ -234,6 +234,7 @@ def save_attachments(xform, instance, media_files, remove_deleted_media=False):
             [instance.xml.decode('utf-8').find(filename) != -1 if
              isinstance(instance.xml, bytes) else
              instance.xml.find(filename) != -1])
+        print("logger_tools - filename", filename)
         if media_in_submission:
             Attachment.objects.get_or_create(
                 instance=instance,
