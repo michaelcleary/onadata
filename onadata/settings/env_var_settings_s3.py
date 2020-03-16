@@ -73,5 +73,6 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')  # noqa
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 AWS_STORAGE_BUCKET_NAME=os.environ['AWS_STORAGE_BUCKET_NAME']
-AWS_BUCKET_ACL=None
-AWS_DEFAULT_ACL=None
+AWS_BUCKET_ACL = None
+AWS_DEFAULT_ACL = None
+AWS_S3_FILE_OVERWRITE = False
