@@ -23,7 +23,7 @@ class Command(BaseCommand):
                 "Expected %s as permission") % ' or '.join(permissions))
 
         try:
-            s3 = get_storage_class('storages.backends.s3boto.S3BotoStorage')()
+            s3 = get_storage_class('storages.backends.s3boto3.S3BotoStorage')()
         except Exception:
             self.stderr.write(_(
                 u"Missing necessary libraries. Try running: pip install "
